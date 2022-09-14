@@ -1,6 +1,6 @@
 var as24tracking = Object.assign(Object.create(HTMLElement.prototype), {
     inDev: false,
-    supportedActions: ['set', 'click', 'pageview'],
+    supportedActions: ['set', 'click', 'pageview', 'customClick'],
     supportedTypes: ['gtm', 'pagename'],
     reservedWords: ['type', 'action', 'as24-tracking-value', 'as24-tracking-click-target'],
 

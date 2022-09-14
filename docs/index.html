@@ -60,6 +60,13 @@
         <button id="myNewButton">trackIt (gtm click tracking with event_trigger)</button>
 
         <!--
+        ut.push(['gtm', 'click',{eventcategory: 'my-project', eventaction: 'login', eventlabel: 'b2c'}]);
+        -->
+        <as24-tracking type="gtm" action="customClick" as24-tracking-click-target="#myCustomButton" eventcategory="my-project"
+            eventaction="login" eventlabel="b2c" customKey="customValue"></as24-tracking>
+        <button id="myCustomButton">trackIt (gtm click tracking with event_trigger and custom param)</button>
+
+        <!--
     ut.push(['gtm', 'pageview']);
     -->
         <as24-tracking type="gtm" action="pageview" as24-tracking-click-target="#myButton2"></as24-tracking>

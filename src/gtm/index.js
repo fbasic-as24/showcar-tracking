@@ -83,6 +83,20 @@ function trackClick(params) {
     }
 }
 
+function trackClickCustom(params) {
+    const baseParams = {
+        event: 'event_trigger',
+        event_category: params.eventcategory,
+        event_action: params.eventaction,
+        event_label: params.eventlabel || '',
+        event_non_interaction: false,
+    };
+    let mergedParams = Object.assign({}, baseParams, params);
+    if (params.eventcategory && params.eventaction) {
+        gtm.push(mergedParams);
+    }
+}
+
 var firstPageview = true;
 
 function trackPageview(data) {
@@ -117,4 +131,5 @@ module.exports = {
     set: gtm.push,
     pageview: trackPageview,
     click: trackClick,
+    customClick: trackClickCustom,
 };

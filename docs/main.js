@@ -148,6 +148,8 @@
 
 	'use strict';
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var merge = __webpack_require__(3);
 	
 	var gtm = __webpack_require__(6);
@@ -218,6 +220,20 @@
 	    }
 	}
 	
+	function trackClickCustom(params) {
+	    var baseParams = {
+	        event: 'event_trigger',
+	        event_category: params.eventcategory,
+	        event_action: params.eventaction,
+	        event_label: params.eventlabel || '',
+	        event_non_interaction: false
+	    };
+	    var mergedParams = _extends({}, params, baseParams);
+	    if (params.eventcategory && params.eventaction) {
+	        gtm.push(mergedParams);
+	    }
+	}
+	
 	var firstPageview = true;
 	
 	function trackPageview(data) {
@@ -251,7 +267,8 @@
 	
 	    set: gtm.push,
 	    pageview: trackPageview,
-	    click: trackClick
+	    click: trackClick,
+	    customClick: trackClickCustom
 	};
 
 /***/ }),
@@ -309,6 +326,7 @@
 	
 	var dataLayer = window.dataLayer = window.dataLayer || [];
 	var useNewArrayLogic = window.location.href.indexOf('tracking-arrays=true') >= 0;
+	var domainsThatRequireConsent = ['at', 'fr', 'nl'];
 	
 	module.exports = {
 	    loadContainer: function loadContainer(containerId) {
@@ -323,7 +341,7 @@
 	        document.documentElement.className += ' ' + gtmAlreadyLoadedClassName;
 	
 	        var tld = window.location.hostname.split('.').pop();
-	        if (tld === 'nl' && window.__tcfapi) {
+	        if (domainsThatRequireConsent.includes(tld) && window.__tcfapi) {
 	            var callback = function callback(tcData, success) {
 	                if (success && (tcData.eventStatus === 'tcloaded' || tcData.eventStatus === 'useractioncomplete')) {
 	                    window.__tcfapi('removeEventListener', 2, function () {}, tcData.listenerId);
@@ -467,7 +485,7 @@
 	
 	var as24tracking = _extends(Object.create(HTMLElement.prototype), {
 	    inDev: false,
-	    supportedActions: ['set', 'click', 'pageview'],
+	    supportedActions: ['set', 'click', 'pageview', 'customClick'],
 	    supportedTypes: ['gtm', 'pagename'],
 	    reservedWords: ['type', 'action', 'as24-tracking-value', 'as24-tracking-click-target'],
 	
